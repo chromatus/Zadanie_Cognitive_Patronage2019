@@ -11,16 +11,17 @@ from sklearn.preprocessing import MinMaxScaler
 dataPath = 'salary.csv'
 # location and of .csv file containing data
 
-class Data:
-    def dataLoading(self):
-        # loads data from file replacing missing values with NaN
+class Cognitive:
+    def data_loading(self):
+        """loads data from file replacing missing values with NaN."""
         frame = pd.read_csv(dataPath, na_values = ' ', header = 0)
         return frame
     
     
-    def dataPreprocessing(self, frame):
-        # separating complete and incomplete rows 
-        # into separate frames and scaling them
+    def data_preprocessing(self, frame):
+        """Separates complete and incomplete rows into separate frames
+        and scales them.
+        """
         complData = frame.dropna()
         incomplData = frame[frame.isnull().any(axis=1)]
         #splitting complete and incomplete rows
@@ -38,8 +39,8 @@ class Data:
         return X, y, toFillX
     
     
-    def dataPredicting(self, X, y, toFillX):
-        # using sklearn to fill uncompleted rows    
+    def data_predicting(self, X, y, toFillX):
+        """Uses sklearn to fill uncompleted rows."""
         from sklearn.svm import SVR
         svr = SVR(kernel='linear')
         svr.fit(X, y)
@@ -47,8 +48,8 @@ class Data:
         return predy
     
     
-    def dataRescaling(self, X, y, toPred, estData):
-        # scaling data to what it was before processing  
+    def data_rescaling(self, X, y, toPred, estData):
+        """Scales the data to what it was before processing."""
         X = MinMaxScaler(feature_range=(1, 12.7)).fit_transform(X)
         toPred = MinMaxScaler(feature_range=(2, 12)).fit_transform(toPred)
         
@@ -72,8 +73,8 @@ class Data:
 #         plt.legend()
 #         plt.show()
 #         return
-
-
+# 
+# 
 # # Using created functions
 # dataFrame = dataLoading()
 # globalX, globaly, toPredictX = dataPreprocessing(dataFrame)
