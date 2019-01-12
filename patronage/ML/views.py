@@ -9,7 +9,7 @@ def index(request):
     template = loader.get_template('ML/index.html')
     return HttpResponse(template.render())
 
-def data_presentation(request):
+def data_table(request):
     template = loader.get_template('ML/display.html')
     salary_list = Salary.objects.order_by('id')
     context = {'salary_list' : salary_list}
@@ -24,3 +24,6 @@ def cognitive(request):
     cognitive.data_export()
     response = "Data has been loaded"
     return HttpResponse(response)
+
+def plots(request):
+    return HttpResponse()

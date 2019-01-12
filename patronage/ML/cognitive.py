@@ -5,7 +5,7 @@ made by Andrzej Klimko
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 
 from .models import Salary
@@ -77,15 +77,15 @@ class Cognitive:
         return
     
     
-    def plot(self):
-        """Makes data visualization."""
-        plt.scatter(self.X, self.y, label='inputed data')
-        plt.plot(self.to_fill_X, self.predicted, color = 'red')
-        plt.scatter(self.to_fill_X, self.predicted,
-            label = 'estimated values', color = 'red')
-        plt.legend()
-        plt.show()
-        return
+#     def plot(self):
+#         """Makes data visualization."""
+#         plt.scatter(self.X, self.y, label='inputed data')
+#         plt.plot(self.to_fill_X, self.predicted, color = 'red')
+#         plt.scatter(self.to_fill_X, self.predicted,
+#             label = 'estimated values', color = 'red')
+#         plt.legend()
+#         plt.show()
+#         return
     
     
     def data_export(self):
