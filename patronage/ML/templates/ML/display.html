@@ -1,0 +1,21 @@
+<div id="fixer" style="position: relative; max-width: 1000px; text-align: center;">
+{% if salary_list %}
+    <ul>
+    <table width=500px style="    
+    border: 1px solid black; padding: 15px; text-align: left;
+    border-spacing: 10px;">
+    <tr><th>ID</th><th>Years worked</th><th>Salary<th></tr>
+    {% for salary in salary_list %}
+        <tr>
+        	<td>{{ salary.id }}</td>
+        	<td>{{ salary.years_worked }}</td>
+        	<td>{{ salary.salary }}</td>
+        </tr>
+    {% endfor %}
+	</table>
+    </ul>
+{% else %}
+    <p>No data to display.</p>
+{% endif %}
+<li><a href="http://127.0.0.1:8000/ML/">Wstecz</a></li>
+</div>

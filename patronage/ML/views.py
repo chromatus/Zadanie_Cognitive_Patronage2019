@@ -1,10 +1,8 @@
-from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
 
 from .cognitive import Cognitive
-# Create your views here.
-
+from .models import Salary
 
 
 def index(request):
@@ -12,8 +10,10 @@ def index(request):
     return HttpResponse(template.render())
 
 def data_presentation(request):
-    response = "You're looking at the placeholder for data presentations page."
-    return HttpResponse(response)
+    template = loader.get_template('ML/display.html')
+    salary_list = Salary.objects.order_by('id')
+    context = {'salary_list' : salary_list}
+    return HttpResponse(template.render(context, request))
 
 def cognitive(request):
     cognitive = Cognitive()
