@@ -1,4 +1,6 @@
-python 3.2
+python
 numpy 
 pandas 
-sklearn 
+sklearn
+django
+sqlite3

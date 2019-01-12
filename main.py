@@ -6,15 +6,18 @@ made by Andrzej Klimko
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import sqlite3
+import django
 from sklearn.preprocessing import MinMaxScaler
 
-dataPath = 'salary.csv'
-# location and of .csv file containing data
+data_path = 'salary.csv'
+# Location and of .csv file containing input data.
+database_path = 'data/sqlite'
+# Location of sqlite3 database file
+    
 
 class Cognitive:
-    """
-    """
-    
+    """Class for handling data."""
     frame = []
     complete_data = []
     partial_data = []
@@ -24,9 +27,9 @@ class Cognitive:
     predicted = []
     
     
-    def data_loading(self):
+    def data_import_from_file(self, path):
         """Loads data from file replacing missing values with NaN."""
-        self.frame = pd.read_csv(dataPath, na_values = ' ', header = 0)
+        self.frame = pd.read_csv(path, na_values = ' ', header = 0)
         return
     
     
@@ -36,18 +39,18 @@ class Cognitive:
         """
         self.complete_data = self.frame.dropna()
         self.partial_data = self.frame[self.frame.isnull().any(axis=1)]
-        #splitting complete and incomplete rows
+        # Splitting complete and incomplete rows.
         
         arr = np.array(self.complete_data, dtype = np.float)
         arr2 = np.array(self.partial_data, dtype = np.float)
-        # convert values to floats
+        # Converting values to floats.
         arr = MinMaxScaler().fit_transform(arr)
-        # scaling complete rows for further processing
+        # Scaling complete rows for further processing.
         self.X, self.y = arr[:, :-1], arr[:, -1]
         self.to_fill_X = arr2[:, :-1]
-        # splitting scaled data for further processing
+        # Splitting scaled data for further processing.
         self.to_fill_X = MinMaxScaler().fit_transform(self.to_fill_X)
-        # scaling incomplete rows
+        # Scaling incomplete rows.
         return
     
     
@@ -69,10 +72,10 @@ class Cognitive:
         combined = np.array(combined, dtype = np.float)
         combined = MinMaxScaler(feature_range=(2750, 13000)).fit_transform(
             combined.reshape(-1, 1))
-        # combining data to rescale it
-        # done to use data from file for scaling predicted data
+        # Combining data to rescale it,
+        # done to use data from file for scaling predicted data.
         self.y, self.predicted = combined[:len(self.y)], combined[len(self.y):]
-        #splitting data again, for further use
+        # Splitting data again, for further use.
         return
     
     
@@ -85,13 +88,66 @@ class Cognitive:
         plt.legend()
         plt.show()
         return
+    
+    
+    def data_export(self):
+        """Exports data to the database."""
+        try:
+            for i in range(0, len(self.X)):
+                cursor.execute('''INSERT INTO salary(years_worked, salary)
+                    VALUES(?,?)''',
+                    (float(self.X[i]), float(self.y[i])))
+            for i in range(0, len(self.to_fill_X)):
+                cursor.execute('''INSERT INTO salary(
+                    years_worked, salary)
+                    VALUES(?,?)''',
+                    (float(self.to_fill_X[i]), float(self.predicted[i])))
+                db.commit()
+        except:
+            # Rolls back changes if something goes wrong.
+            db.rollback()
+            print('Could not export to the database.')
+        return
 
 
+def database_init():
+    """Prepares database."""
+    try:
+        cursor.execute('''DROP TABLE IF EXISTS salary''')
+        cursor.execute('''CREATE TABLE
+            salary(id INTEGER PRIMARY KEY, years_worked REAL, salary REAL)''')
+        db.commit()
+    except:
+        db.rollback()
+        raise Exception("Database could not be initialized.")
+    return
+
+
+def database_print():
+    cursor.execute('''SELECT years_worked, salary FROM salary''')
+    all_rows = cursor.fetchall()
+    print("Years worked        Salary")
+    for row in all_rows:
+        print('{0}              {1},'.format(row[0], row[1]))
+    return
+
+
+print("Starting up.")
+db = sqlite3.connect(database_path)
+# Connecting database.
+cursor = db.cursor()
+
+
+database_init()
 # Creating class instance and calling created methods.
 cognitive = Cognitive()
-cognitive.data_loading()
+cognitive.data_import_from_file(data_path)
 cognitive.data_preprocessing()
 cognitive.data_predicting()
 cognitive.data_rescaling()
-cognitive.plot()
-
+# cognitive.plot()
+cognitive.data_export()
+# database_print()
+db.close()
+# Closing database
+print("Terminating.")
