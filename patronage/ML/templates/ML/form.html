@@ -1,0 +1,17 @@
+<div id="fixer" style="position: relative; max-width: 1000px; text-align: center;">
+<form action="{% url 'filtered' %}" method="post">
+{% csrf_token %}
+<table>
+	<tr><th><label for="id_subject">Minimum salary:</label></th><td><input id="id_subject" type="float" 
+		name="min_salary"></td></tr>
+	<tr><th><label for="id_subject">Maximum salary:</label></th><td><input id="id_subject" type="float" 
+		name="max_salary"></td></tr>
+	<tr><th><label for="id_subject">Minimum years worked:</label></th><td><input id="id_subject" type="float" 
+		name="min_years"></td></tr>
+	<tr><th><label for="id_subject">Maximum years worked:</label></th><td><input id="id_subject" type="float" 
+		name="max_years"></td></tr>
+</table>
+<a href="{% url 'index' %}">Wstecz</a>
+<input type="submit" value="Kontynuuj">
+</form>
+</div>
