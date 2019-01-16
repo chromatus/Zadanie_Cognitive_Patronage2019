@@ -1,6 +1,8 @@
 <div id="fixer" style="position: relative; max-width: 1000px; text-align: center;">
-<p>&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://127.0.0.1:8000/ML/data">
+<p>&nbsp; &nbsp; &nbsp; &nbsp;<a href="{% url 'data_table' %}">
 Tabela danych </a></p>
-<p>&nbsp; &nbsp; &nbsp; &nbsp;<a href="http://127.0.0.1:8000/ML/cognitive">
+<p>&nbsp; &nbsp; &nbsp; &nbsp;<a href="{% url 'data_form' %}">
+Filtrowanie danych </a></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp;<a href="{% url 'cognitive' %}">
 Ladowanie danych z pliku (UWAGA grozi powieleniem danych) </a></p>
 </div>
