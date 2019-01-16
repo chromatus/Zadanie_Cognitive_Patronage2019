@@ -1,6 +1,5 @@
-python 3.7.0
 numpy 
 pandas 
 sklearn
-django 2.14
+django
 sqlite3
