@@ -29,4 +29,4 @@ django superuser:
 	
 
 Planned features:
-- filtering data displayed based on the form filled by user
+- data presentation with charts
