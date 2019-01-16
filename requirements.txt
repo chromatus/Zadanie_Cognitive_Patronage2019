@@ -1,6 +1,4 @@
-python 3.7.0
-numpy 
-pandas 
-sklearn
-django 2.14
-sqlite3
+Django==2.1.4
+pandas==0.23.4
+numpy==1.15.1
+scikit_learn==0.20.2
